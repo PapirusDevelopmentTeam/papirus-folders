@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
+# This script allows changing the color of folders in Papirus icon theme
+#
+# @author: Sergei Eremenko (https://github.com/SmartFinn)
+# @license: MIT license (MIT)
+# @link: https://github.com/PapirusDevelopmentTeam/papirus-folders
 
-if test -z "$BASH_VERSINFO"; then
+if test -z "$BASH_VERSION"; then
 	printf "Error: this script only works in bash.\n" >&2
 	exit 1
-elif (( BASH_VERSINFO[0] < 4 | BASH_VERSINFO[1] < 1 )); then
-	printf "Error: this script requires bash version >= 4.1\n" >&2
+fi
+
+if (( BASH_VERSINFO[0] * 10 + BASH_VERSINFO[1] < 42 )); then
+	printf "Error: this script requires bash version >= 4.2\n" >&2
 	exit 1
-else true
 fi
 
 # set -x  # Uncomment to debug this shell script
@@ -16,7 +22,7 @@ set -o errexit \
 
 readonly THIS_SCRIPT="$(readlink -f "$0")"
 readonly PROGNAME="$(basename "$0")"
-readonly VERSION="0.1.0"
+readonly VERSION="0.0.1"
 readonly -a ARGS=("$@")
 
 readonly DEFAULT_COLOR="blue"
@@ -29,8 +35,13 @@ _msg() {
 }
 
 _verbose() {
-	(( "$VERBOSE" )) || return 0
+	(( VERBOSE )) || return 0
 	_msg "$@"
+}
+
+_exit() {
+	_msg "$@" "Exiting..."
+	exit 0
 }
 
 _fail() {
@@ -91,7 +102,7 @@ get_current_color() {
 	declare -p current_color
 }
 
-set_color() {
+change_color() {
 	[ -n "$1" ] || return 1
 
 	local -r color="$1"
@@ -136,7 +147,7 @@ config() {
 	if _is_system_dir; then
 		config_file="/var/lib/$PROGNAME/keep"
 	else
-		config_file="$HOME/.config/$PROGNAME/keep"
+		config_file="${XDG_CONFIG_HOME:-$HOME/.config}/$PROGNAME/keep"
 	fi
 
 	config_dir="$(dirname "$config_file")"
@@ -168,6 +179,8 @@ config() {
 				[ -d "$config_dir"  ] || mkdir -p "$config_dir"
 				[ -f "$config_file" ] || touch "$config_file"
 
+				_verbose "Saving params to '$config_file'..."
+
 				cat >> "$config_file" <<- EOF
 					$(for i; do echo "$i"; done)
 				EOF
@@ -180,7 +193,7 @@ config() {
 		esac
 	done
 
-	return 1
+	return 0
 }
 
 update_icon_caches() {
@@ -239,9 +252,11 @@ _is_root_user() {
 	return 1
 }
 
-check_privileges() {
+verify_privileges() {
 	_is_root_user  && return 0
 	_is_system_dir || return 0
+
+	_verbose "This operation requires root privileges."
 
 	if command -v sudo > /dev/null; then
 		exec sudo "$THIS_SCRIPT" "${ARGS[@]}"
@@ -288,7 +303,7 @@ cmdline() {
 				[ -z "$operation" ] || _opt_err
 				operation="change-color"
 
-				local -r set_color="$OPTARG"
+				local -r selected_color="$OPTARG"
 				;;
 			d|D)
 				[ -z "$operation" ] || _opt_err
@@ -327,43 +342,37 @@ cmdline() {
 
 	case "$operation" in
 		change-color)
-			_is_valid_color "$set_color" \
-				|| _fail "'$set_color' is not a valid color"
+			_is_valid_color "$selected_color" \
+				|| _fail "'$selected_color' is not a valid color"
 
-			check_privileges
+			verify_privileges
 
-			set_color "$set_color" || _fatal
-			config --new --set "color=$set_color" || true
+			change_color "$selected_color" || _fatal
+			config --new --set "color=$selected_color" || _fatal
 			update_icon_caches || _fatal
-
-			# _verbose "The color of folders changed to '$set_color'."
 			;;
 		revert-default)
-			check_privileges
+			verify_privileges
 
-			set_color "$DEFAULT_COLOR" || _fatal
-			config --new --set "color=$DEFAULT_COLOR" || true
+			change_color "$DEFAULT_COLOR" || _fatal
+			config --new --set "color=$DEFAULT_COLOR" || _fatal
 			update_icon_caches || _fatal
 
-			_verbose "Reverted back the default color of folders."
+			_verbose "Reverted back to the default color of folders."
 			;;
 		restore-color)
 			saved_color="$(config --get color)"
 
-			if [ -z "$saved_color" ]; then
-				_verbose "Cannot find config file. Exiting..."
-				exit 0
-			fi
+			[ -n "$saved_color" ] \
+				|| _exit "cannot get color from a config file."
 
 			_is_valid_color "$saved_color" \
-				|| _fail "'$saved_color' is not a valid color"
+				|| _exit "cannot restore '$saved_color' color of folders."
 
-			check_privileges
+			verify_privileges
 
-			# _verbose "Restoring '$saved_color' color of folders from config..."
-			set_color "$saved_color" || _fatal
-
-			_verbose "'$saved_color' color of folders is restored."
+			change_color "$saved_color" || _fatal
+			_msg "'$saved_color' color of the folders has been restored."
 			;;
 	esac
 
@@ -393,7 +402,7 @@ cmdline() {
 				EOF
 				;;
 			update-icon-caches)
-				check_privileges
+				verify_privileges
 
 				update_icon_caches || _fatal
 				;;
