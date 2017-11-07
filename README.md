@@ -62,6 +62,12 @@ Use the script to install the latest version directly from this repo (independen
 wget -qO- https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/install.sh | sh
 ```
 
+To install papirus-folders on **BSD systems** using the following command:
+
+```
+wget -qO- https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/install.sh | TAG=xBSD PREFIX=/usr/local sh
+```
+
 #### Uninstall
 
 ```
