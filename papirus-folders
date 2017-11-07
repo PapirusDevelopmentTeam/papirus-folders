@@ -54,9 +54,9 @@ opt_err() { fatal "only one operation may be used at a time."; }
 usage() {
 	cat >&2 <<- EOF
 	usage:
-	 $PROGNAME [options] {-C --color} <color>
-	 $PROGNAME [options] {-D --default}
-	 $PROGNAME [options] {-R --restore}
+	 $PROGNAME [options] -t <theme> {-C --color} <color>
+	 $PROGNAME [options] -t <theme> {-D --default}
+	 $PROGNAME [options] -t <theme> {-R --restore}
 
 	OPERATIONS:
 	 -C --color <color>  change color of folders
