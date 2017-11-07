@@ -7,10 +7,6 @@ install:
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
 	install -m 755 $(PROGNAME) $(DESTDIR)$(PREFIX)/bin
 
-post-install:
-	# build cache database of MIME types handled by desktop files
-	update-desktop-database -q || true
-
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/$(PROGNAME)
 
