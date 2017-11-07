@@ -1,0 +1,15 @@
+Source: papirus-folders
+Section: universe/x11
+Priority: optional
+Maintainer: Sergei Eremenko <finalitik@gmail.com>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.8
+Homepage: https://github.com/PapirusDevelopmentTeam/papirus-folders
+Bugs: https://github.com/PapirusDevelopmentTeam/papirus-folders/issues
+
+Package: papirus-folders
+Architecture: all
+Multi-Arch: foreign
+Depends: ${misc:Depends}, bash (>= 4.2), findutils, awk
+Recommends: papirus-icon-theme (>= 20171007)
+Description: This package allows you to change the color of folders
