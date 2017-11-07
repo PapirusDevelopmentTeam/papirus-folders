@@ -15,8 +15,9 @@ ifndef TAG
 	$(error TAG is not defined. Pass via "make release TAG=v0.1.2")
 endif
 
-release: _get_version push
+release: _get_version
 	git tag -f $(TAG)
+	git push origin
 	git push origin --tags
 
 undo_release: _get_version
