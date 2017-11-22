@@ -22,7 +22,7 @@ set -o errexit \
 
 readonly THIS_SCRIPT="$(readlink -f "$0")"
 readonly PROGNAME="$(basename "$0")"
-readonly VERSION="0.0.2"
+readonly VERSION="0.0.3"
 readonly -a ARGS=("$@")
 
 msg() {
@@ -108,8 +108,8 @@ get_colors() {
 	local color=''
 	local -a colors=()
 	local -a valid_colors=("black" "blue" "brown" "cyan" "green"
-		"grey" "magenta" "orange" "pink" "purple" "red" "violet"
-		"yellow")
+		"grey" "magenta" "orange" "pink" "purple" "red" "teal"
+		"violet" "yellow")
 
 	for color in "${valid_colors[@]}"; do
 		if [ -e "$THEME_DIR/48x48/places/folder-$color.svg" ]; then
