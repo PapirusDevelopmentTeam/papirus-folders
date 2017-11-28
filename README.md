@@ -22,8 +22,9 @@ Some examples of use:
     ```
     papirus-folders -R
     ```
-    This is extremely useful for restoring color after icon theme upgrade.
+    This is extremely useful for restoring color after icon theme upgrade (official installers of [papirus-icon-theme](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme) and some third-party packages do this automatically).
 
+**NOTE:** To change the color of an individual folder you can use [Folder Color](http://foldercolor.tuxfamily.org) or [Dolphin Folder Color](https://github.com/audoban/dolphin-folder-color).
 
 ## Preview
 
@@ -73,3 +74,13 @@ wget -qO- https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folde
 ```
 wget -qO- https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/install.sh | uninstall=true sh
 ```
+
+### Unofficial packages
+
+Packages in this section are not part of the official repositories. If you have a problem or a question, please contact the package maintainer.
+
+| **Distro** | **Maintainer**  | **Package**                              |
+| :--------- | :-------------- | :--------------------------------------- |
+| Arch Linux | Piotr Górski    | [papirus-folders-git](https://aur.archlinux.org/packages/papirus-folders-git/) <sup>AUR</sup> |
+
+**NOTE:** If you are a maintainer and want to be in the list, please create an issue or make a pull request.
