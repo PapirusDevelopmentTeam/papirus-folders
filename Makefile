@@ -6,9 +6,17 @@ all:
 install:
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
 	install -m 755 $(PROGNAME) $(DESTDIR)$(PREFIX)/bin
+	mkdir -p $(DESTDIR)$(PREFIX)/bash-completion/completions
+	install -m 644 completion/$(PROGNAME) \
+		$(DESTDIR)$(PREFIX)/bash-completion/completions
+	mkdir -p $(DESTDIR)$(PREFIX)/zsh/vendor-completions
+	install -m 644 completion/_$(PROGNAME) \
+		$(DESTDIR)$(PREFIX)/zsh/vendor-completions
 
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/$(PROGNAME)
+	rm -f $(DESTDIR)$(PREFIX)/bash-completion/completions/$(PROGNAME)
+	rm -f $(DESTDIR)$(PREFIX)/zsh/vendor-completions/_$(PROGNAME)
 
 _get_version:
 ifndef TAG
