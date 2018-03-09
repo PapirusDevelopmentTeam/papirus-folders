@@ -1,0 +1,18 @@
+#compdef papirus-folders
+#
+# @author: Sergei Eremenko (https://github.com/SmartFinn)
+# @license: MIT license (MIT)
+# @link: https://github.com/PapirusDevelopmentTeam/papirus-folders
+
+_arguments -C \
+	'(-h --help)'{-h,--help}'[show help message and exit]' \
+	'(-V --version)'{-V,--version}'[show version number and exit]' \
+	'(-v --verbose)'{-v,--verbose}'[be verbose]' \
+	'(-C --color)'{-C,--color}'[change color of folders]:color: ' \
+	'(-D --default)'{-D,--default}'[back to the default color]' \
+	'(-R --restore)'{-R,--restore}'[restore the last used color from the config file]' \
+	'(-l --list)'{-l,--list}'[show available colors]' \
+	'(-t --theme)'{-t,--theme}'[make changes to the specified theme]:theme: ' \
+	'(-u --update-caches)'{-u,--update-caches}'[update icon caches]'
+
+# vim: ft=zsh sw=4 ts=4

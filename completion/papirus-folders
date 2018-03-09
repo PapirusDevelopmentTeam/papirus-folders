@@ -1,0 +1,38 @@
+# papirus-folders completion
+#
+# @author: Sergei Eremenko (https://github.com/SmartFinn)
+# @license: MIT license (MIT)
+# @link: https://github.com/PapirusDevelopmentTeam/papirus-folders
+
+_papirus_folders() {
+	local cur prev
+	local -a opts=(
+		-h --help
+		-V --version
+		-v --verbose
+		-C --color
+		-D --default
+		-R --restore
+		-l --list
+		-t --theme
+		-u --update-caches
+	)
+
+	_get_comp_words_by_ref cur prev
+
+	case "$prev" in
+		-C|--color)
+			# no completion, wait for user input
+			;;
+		-t|--theme)
+			# no completion, wait for user input
+			;;
+		*)
+			COMPREPLY=( $(compgen -W "${opts[*]}" -- "${cur}") )
+			;;
+	esac
+}
+
+complete -F _papirus_folders papirus-folders
+
+# ex: ts=4 sw=4 filetype=sh
