@@ -81,6 +81,6 @@ Packages in this section are not part of the official repositories. If you have 
 
 | **Distro** | **Maintainer**  | **Package**                              |
 | :--------- | :-------------- | :--------------------------------------- |
-| Arch Linux | Piotr Górski    | `yaourt -S papirus-folders-git` <sup>AUR [[link](https://aur.archlinux.org/packages/papirus-folders-git/)]</sup> |
+| Arch Linux | Piotr Górski    | [papirus-folders-git](https://aur.archlinux.org/packages/papirus-folders-git) <sup>AUR</sup> |
 
 **NOTE:** If you are a maintainer and want to be in the list, please create an issue or make a pull request.
