@@ -1,0 +1,474 @@
+#!/usr/bin/env bash
+# This script allows changing the color of folders in Papirus icon theme
+#
+# @author: Sergei Eremenko (https://github.com/SmartFinn)
+# @license: MIT license (MIT)
+# @link: https://github.com/PapirusDevelopmentTeam/papirus-folders
+
+if test -z "$BASH_VERSION"; then
+	printf "Error: this script only works in bash.\n" >&2
+	exit 1
+fi
+
+if (( BASH_VERSINFO[0] * 10 + BASH_VERSINFO[1] < 42 )); then
+	printf "Error: this script requires bash version >= 4.2\n" >&2
+	exit 1
+fi
+
+# set -x  # Uncomment to debug this shell script
+set -o errexit \
+	-o noclobber \
+	-o pipefail
+
+readonly THIS_SCRIPT="$(readlink -f "$0")"
+readonly PROGNAME="$(basename "$0")"
+readonly VERSION="0.0.6"
+readonly -a ARGS=("$@")
+
+msg() {
+	[ "$TERM" != "dumb" ] || return 0
+	printf "%s: %b\n" "$PROGNAME" "$*" >&2
+}
+
+verbose() {
+	[ "$VERBOSE" -eq 1 ] || return 0
+	msg "$@"
+}
+
+err() {
+	msg "Error:" "$@"
+}
+
+_exit() {
+	msg "$@" "Exiting ..."
+	exit 0
+}
+
+fatal() {
+	err "$@"
+	exit 1
+}
+
+opt_err() { fatal "only one operation may be used at a time."; }
+
+usage() {
+	cat >&2 <<- EOF
+	usage:
+	 $PROGNAME [options] -t <theme> {-C --color} <color>
+	 $PROGNAME [options] -t <theme> {-D --default}
+	 $PROGNAME [options] -t <theme> {-R --restore}
+
+	OPERATIONS:
+	 -C --color <color>  change color of folders
+	 -D --default        back to the default color
+	 -R --restore        restore the last used color from the config file
+
+	OPTIONS:
+	 -l --list           show available colors
+	 -t --theme <theme>  make changes to the specified theme instead of Papirus
+	 -u --update-caches  update icon caches for Papirus and siblings
+	 -V --version        print $PROGNAME version and exit
+	 -v --verbose        be verbose
+	 -h --help           show this help
+	EOF
+
+	exit "${1:-0}"
+}
+
+_is_root_user() {
+	if [ "$(id -u)" -eq 0 ]; then
+		return 0
+	fi
+
+	return 1
+}
+
+_is_system_dir() {
+	if [ "${THEME_DIR:0:4}" == "/usr" ]; then
+		return 0
+	fi
+
+	return 1
+}
+
+_is_valid_color() {
+	local color="$1"
+
+	eval "$(get_colors)"
+
+	for i in "${colors[@]}"; do
+		[ "$i" == "$color" ] || continue
+		return 0
+	done
+
+	return 1
+}
+
+get_colors() {
+	local color=''
+	local -a colors=()
+	local -a valid_colors=("black" "blue" "bluegrey" "brown" "cyan"
+		"green" "grey" "magenta" "orange" "pink" "purple" "red"
+		"teal" "violet" "yellow")
+
+	for color in "${valid_colors[@]}"; do
+		if [ -e "$THEME_DIR/places/scalable/folder-$color.svg" ]; then
+			colors=( "${colors[@]}" "$color" )
+		fi
+	done
+
+	# return array of colors
+	declare -p colors
+}
+
+get_current_color() {
+	local icon_file icon_name current_color=''
+
+	icon_file=$(readlink -f "$THEME_DIR/places/scalable/folder.svg")
+	icon_name=$(basename -s .svg "$icon_file")
+	current_color="${icon_name##*-}"
+
+	declare -p current_color
+}
+
+get_theme_dir() {
+	local icons_dir
+	local -a icons_dirs=(
+		"/usr/local/share/icons/$THEME_NAME"
+		"/usr/share/icons/$THEME_NAME"
+		"$HOME/.local/share/icons/$THEME_NAME"
+		"$HOME/.icons/$THEME_NAME"
+	)
+
+	for icons_dir in "${icons_dirs[@]}"; do
+		[ -f "$icons_dir/index.theme" ] || continue
+		printf '%s' "$icons_dir"
+		return 0
+	done
+
+	return 1
+}
+
+get_user() {
+	local user user_dir
+
+	if [ -n "$PKEXEC_UID" ]; then
+		user="$(id -nu "$PKEXEC_UID")"
+	elif [ -n "$SUDO_USER" ]; then
+		user="$SUDO_USER"
+	else
+		user="$USER"
+	fi
+
+	user_dir="$(getent passwd "$user" | awk -F: '{print $6}')"
+
+	declare -p user user_dir
+}
+
+config() {
+	# usage: config [{-n --new}] {-s --set} key=value... | {-g --get} key...
+	local config_dir
+	local config_file
+
+	if _is_system_dir; then
+		config_dir="/var/lib/$PROGNAME"
+	else
+		config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/$PROGNAME"
+	fi
+
+	config_file="$config_dir/keep"
+
+	while (( "$#" )); do
+		case "$1" in
+			-g|--get) shift;
+				[ -f "$config_file" ] || return 1
+
+				for key; do
+					[ -n "$key" ] || continue
+					awk -F= -v key="$key" '
+					$1 == key {
+						print $2
+						exit
+					}
+					' "$config_file"
+				done
+
+				break
+				;;
+			-n|--new) shift;
+				rm -f "$config_file"
+				;;
+			-e|--exists) shift;
+				# return 1 if test config_file not exist or empty
+				if [ -f "$config_file" ] && [ -s "$config_file" ]; then
+					return 0
+				else
+					return 1
+				fi
+				;;
+			-s|--set) shift;
+				[ -d "$config_dir"  ] || mkdir -p "$config_dir"
+				[ -f "$config_file" ] || touch "$config_file"
+
+				verbose "Saving params to '$config_file' ..."
+				cat >> "$config_file" <<- EOF
+				$(for key_value; do echo "$key_value"; done)
+				EOF
+
+				break
+				;;
+			*)
+				err "illegal option -- '$1'"
+				return 1
+		esac
+	done
+
+	return 0
+}
+
+change_color() {
+	[ -n "$1" ] || return 1
+
+	local color="$1"
+	local sizes_regex="(32|48|scalable)"
+	local icons_regex="(folder|user)-$color"
+	local file target symlink
+
+	# verbose "Changing color of folders to '$color' ..."
+	find -L "$THEME_DIR" -regextype posix-extended \
+		-regex ".*/places/${sizes_regex}/${icons_regex}.*" \
+		-print0 | while read -r -d $'\0' file; do
+
+		target="$(basename "$file")"
+		symlink="${file/-$color/}"
+
+		ln -sf "$target" "$symlink" || fatal "cannot create '$symlink' symlink"
+	done
+}
+
+list_colors() {
+	local color='' prefix=''
+
+	eval "$(get_colors)"
+	eval "$(get_current_color)"
+
+	for color in "${colors[@]}"; do
+		if [ "$current_color" = "$color" ]; then
+			prefix='>'
+		else
+			prefix=''
+		fi
+
+		printf '%2s %s\n' "$prefix" "$color"
+	done
+}
+
+do_change_color() {
+	_is_valid_color "$SELECTED_COLOR" \
+		|| fatal "'$SELECTED_COLOR' is not a valid color"
+
+	verify_privileges
+
+	msg "Changing color of folders to '$SELECTED_COLOR'" \
+		"for '$THEME_NAME' ..."
+	change_color "$SELECTED_COLOR"
+	config --new --set "theme=$THEME_NAME" "color=$SELECTED_COLOR"
+	update_icon_cache
+}
+
+do_revert_default() {
+	verify_privileges
+
+	msg "Restoring default folder color for '$THEME_NAME' ..."
+	change_color "${DEFAULT_COLORS[$THEME_NAME]}"
+	config --new
+	update_icon_cache
+}
+
+do_restore_color() {
+	local saved_color=''
+
+	if config --exists; then
+		THEME_NAME="$(config --get theme)"
+		saved_color="$(config --get color)"
+	else
+		_exit "Config file not found."
+	fi
+
+	THEME_DIR="$(get_theme_dir)" || _exit "'$THEME_NAME' not found."
+
+	if [ -z "$saved_color" ]; then
+		_exit "cannot get color from a config file."
+	elif _is_valid_color "$saved_color"; then
+		verify_privileges
+
+		change_color "$saved_color"
+		msg "'$saved_color' color of the folders has been restored."
+	else
+		_exit "cannot restore '$saved_color' color of folders."
+	fi
+}
+
+delete_icon_caches() {
+	local icon_cache=''
+
+	eval "$(get_user)"
+
+	declare -a icon_caches=(
+		# KDE 5 icon caches
+		"$user_dir/.cache/icon-cache.kcache"
+		"/var/tmp/kdecache-$user/icon-cache.kcache"
+		# KDE 4 icon caches
+		"$user_dir/.kde4/cache-$(hostname)/icon-cache.kcache"
+	)
+
+	verbose "Deleting icon caches ..."
+	for icon_cache in "${icon_caches[@]}"; do
+		[ -e "$icon_cache" ] || continue
+		rm -f "$icon_cache"
+	done
+}
+
+update_icon_cache() {
+	delete_icon_caches
+
+	verbose "Rebuilding icon cache ..."
+	gtk-update-icon-cache -qf "$THEME_DIR" || true
+}
+
+update_icon_caches() {
+	local theme=''
+
+	delete_icon_caches
+
+	for theme in "${!DEFAULT_COLORS[@]}"; do
+		[ -f "$THEME_DIR/../$theme/index.theme" ] || continue
+		verbose "Rebuilding icon cache for '$theme' ..."
+		gtk-update-icon-cache -qf "$THEME_DIR/../$theme" || true
+	done
+}
+
+verify_privileges() {
+	_is_root_user  && return 0
+	_is_system_dir || return 0
+
+	verbose "This operation requires root privileges."
+
+	if command -v sudo > /dev/null; then
+		exec sudo "$THIS_SCRIPT" "${ARGS[@]}"
+	else
+		fatal "You need to be root to run this command."
+	fi
+}
+
+parse_args() {
+	local arg='' opt=''
+	local -a args=()
+
+	# Translate --gnu-long-options to -g (short options)
+	for arg; do
+		case "$arg" in
+			--help)          args+=( -h ) ;;
+			--list)          args+=( -l ) ;;
+			--theme)         args+=( -t ) ;;
+			--update-caches) args+=( -u ) ;;
+			--verbose)       args+=( -v ) ;;
+			--color)         args+=( -C ) ;;
+			--default)       args+=( -D ) ;;
+			--restore)       args+=( -R ) ;;
+			--version)       args+=( -V ) ;;
+			--[0-9a-Z]*)
+				err "illegal option -- '$arg'"
+				usage 128
+				;;
+			*) args+=("$arg")
+		esac
+	done
+
+	# Reset the positional parameters to the short options
+	eval set -- "${args[@]}"
+
+	while getopts ":C:DRlt:uvVh" opt; do
+		case "$opt" in
+			C ) [ -z "$OPERATION" ] || opt_err
+				OPERATION="change-color"
+				SELECTED_COLOR="$OPTARG"
+				;;
+			D ) [ -z "$OPERATION" ] || opt_err
+				OPERATION="revert-default"
+				;;
+			R ) [ -z "$OPERATION" ] || opt_err
+				OPERATION="restore-color"
+				;;
+			l ) OPTIONS+=("list-colors") ;;
+			t ) THEME_NAME="$OPTARG" ;;
+			u ) OPTIONS+=("update-icon-caches") ;;
+			v ) VERBOSE=1 ;;
+			V ) printf "%s %s\n" "$PROGNAME" "$VERSION"
+				exit 0
+				;;
+			h ) usage 0 ;;
+			: ) err "option requires an argument -- '-$OPTARG'"
+				usage 128
+				;;
+			\?) err "illegal option -- '-$OPTARG'"
+				usage 128
+				;;
+		esac
+	done
+
+	shift $((OPTIND-1))
+
+	# Return an error if any positional parameters are found
+	if [ -n "$1" ]; then
+		err "illegal parameter -- '$1'"
+		usage 128
+	fi
+}
+
+main() {
+	# default values of options
+	declare THEME_NAME="${THEME_NAME:-Papirus}"
+	declare -i VERBOSE="${VERBOSE:-0}"
+	declare -A DEFAULT_COLORS=(
+		['Suru++']='blue'
+	)
+
+	declare OPERATION=''
+	declare SELECTED_COLOR=''
+	declare -a OPTIONS=()
+
+	parse_args "${ARGS[@]}"
+
+	THEME_DIR="$(get_theme_dir)" \
+		|| fatal "fail to find '$THEME_NAME' icon theme."
+
+	case "$OPERATION" in
+		change-color)   do_change_color   ;;
+		revert-default) do_revert_default ;;
+		restore-color)  do_restore_color  ;;
+	esac
+
+	for option in "${OPTIONS[@]}"; do
+		case "$option" in
+			list-colors)
+				cat <<- EOF
+				List of available colors:
+
+				$(list_colors)
+
+				EOF
+				;;
+			update-icon-caches)
+				verify_privileges
+				update_icon_caches
+				;;
+		esac
+	done
+
+	verbose "Done!"
+}
+
+main
+
+exit 0

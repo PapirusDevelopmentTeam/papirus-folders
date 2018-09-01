@@ -7,24 +7,12 @@ PREFIX="${PREFIX:-/usr}"
 TAG="${TAG:-master}"
 uninstall="${uninstall:-false}"
 
-bin_name="papirus-folders"
-gh_url="https://github.com/PapirusDevelopmentTeam"
+bin_name="suru-plus-folders"
+gh_url="https://github.com/gusbemacbe"
 gh_repo="$bin_name"
-gh_desc="Papirus Folders"
+gh_desc="Suru++ Folders"
 
 cat <<- EOF
-
-
-
-      ppppp                         ii
-      pp   pp     aaaaa   ppppp          rr  rrr   uu   uu     sssss
-      ppppp     aa   aa   pp   pp   ii   rrrr      uu   uu   ssss
-      pp        aa   aa   pp   pp   ii   rr        uu   uu      ssss
-      pp          aaaaa   ppppp     ii   rr          uuuuu   sssss
-                          pp
-                          pp
-
-
 
   $gh_desc
   $gh_url/$gh_repo
