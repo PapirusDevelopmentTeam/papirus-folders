@@ -1,5 +1,5 @@
 PREFIX ?= /usr
-PROGNAME := papirus-folders
+PROGNAME := suru-plus-folders
 
 all:
 
