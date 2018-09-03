@@ -3,7 +3,7 @@ Section: universe/x11
 Priority: optional
 Maintainer: Sergei Eremenko <finalitik@gmail.com>
 Build-Depends: debhelper (>= 9)
-Standards-Version: 3.9.8
+Standards-Version: 4.1.4
 Homepage: https://github.com/PapirusDevelopmentTeam/papirus-folders
 Bugs: https://github.com/PapirusDevelopmentTeam/papirus-folders/issues
 
