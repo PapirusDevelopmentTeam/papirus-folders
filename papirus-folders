@@ -20,8 +20,8 @@ set -o errexit \
 	-o noclobber \
 	-o pipefail
 
-readonly THIS_SCRIPT="$(readlink -f "$0")"
-readonly PROGNAME="$(basename "$0")"
+readonly THIS_SCRIPT="$(readlink -f "${BASH_SOURCE[0]}")"
+readonly PROGNAME="$(basename "${BASH_SOURCE[0]}")"
 readonly VERSION="0.0.6"
 readonly -a ARGS=("$@")
 
@@ -49,7 +49,9 @@ fatal() {
 	exit 1
 }
 
-opt_err() { fatal "only one operation may be used at a time."; }
+opt_err() {
+	fatal "only one operation may be used at a time."
+}
 
 usage() {
 	cat >&2 <<- EOF
@@ -253,7 +255,7 @@ list_colors() {
 	eval "$(get_current_color)"
 
 	for color in "${colors[@]}"; do
-		if [ "$current_color" = "$color" ]; then
+		if [ "$current_color" == "$color" ]; then
 			prefix='>'
 		else
 			prefix=''
