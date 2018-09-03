@@ -53,8 +53,8 @@ _download() {
 _uninstall() {
     _msg "Deleting $gh_desc ..."
     _rm "$PREFIX/bin/$bin_name"
-    _rm "$PREFIX/share/bash-completion/completions/$PROGNAME"
-    _rm "$PREFIX/share/zsh/vendor-completions/_$PROGNAME"
+    _rm "$PREFIX/share/bash-completion/completions/$bin_name"
+    _rm "$PREFIX/share/zsh/vendor-completions/_$bin_name"
 }
 
 _install() {
