@@ -4,8 +4,36 @@
 # @license: MIT license (MIT)
 # @link: https://github.com/PapirusDevelopmentTeam/papirus-folders
 
+__get_themes() {
+	local data_dir icons_dir icon_theme
+	local -a data_dirs=()
+	local -a icons_dirs=(
+		"$HOME/.icons"
+		"${XDG_DATA_HOME:-$HOME/.local/share}/icons"
+	)
+
+	# Get data directories from XDG_DATA_DIRS variable and
+	# convert colon-separated list into bash array
+	IFS=: read -ra data_dirs <<< "${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
+
+	for data_dir in "${data_dirs[@]}"; do
+		[ -d "$data_dir/icons" ] || continue
+		icons_dirs=( "${icons_dirs[@]}" "${data_dir%/}/icons" )
+	done
+
+	for icons_dir in "${icons_dirs[@]}"; do
+		for icon_theme in "$icons_dir"/*; do
+			[ -f "$icon_theme/48x48/places/folder-blue.svg" ] || continue
+			printf '%s\n' "${icon_theme##*/}"
+		done
+	done
+	return
+}
+
 _papirus_folders() {
 	local cur prev
+	local -a valid_colors=(black blue bluegrey brown cyan green grey
+		magenta orange pink purple red teal violet yellow)
 	local -a opts=(
 		-h --help
 		-V --version
@@ -22,10 +50,11 @@ _papirus_folders() {
 
 	case "$prev" in
 		-C|--color)
-			# no completion, wait for user input
+			COMPREPLY=( $(compgen -W "${valid_colors[*]}" -- "${cur}") )
+			return
 			;;
 		-t|--theme)
-			# no completion, wait for user input
+			COMPREPLY=( $(compgen -W "$(__get_themes)" -- "${cur}") )
 			;;
 		*)
 			COMPREPLY=( $(compgen -W "${opts[*]}" -- "${cur}") )
