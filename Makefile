@@ -1,5 +1,6 @@
 PREFIX ?= /usr
 PROGNAME := papirus-folders
+VERSION ?=
 
 all:
 
@@ -19,18 +20,19 @@ uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/share/zsh/vendor-completions/_$(PROGNAME)
 
 _get_version:
-ifndef TAG
-	$(error TAG is not defined. Pass via "make release TAG=v0.1.2")
+ifndef VERSION
+	$(error VERSION is not defined. Pass via "make bump VERSION=0.1.2")
 endif
 
-release: _get_version
-	git tag -f $(TAG)
+bump: _get_version
+	sed -i '/VERSION=/s/[0-9.]\+/$(VERSION)/' $(PROGNAME)
+	dch -v $(VERSION)-1 -- ''
+	git commit -am "Bump to v$(VERSION)"
+	git tag -f v$(VERSION)
+
+release:
 	git push origin
 	git push origin --tags
 
-undo_release: _get_version
-	-git tag -d $(TAG)
-	-git push --delete origin $(TAG)
 
-
-.PHONY: all install uninstall _get_version release undo_release
+.PHONY: all install uninstall _get_version bump release
