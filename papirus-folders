@@ -22,7 +22,7 @@ set -o errexit \
 
 readonly THIS_SCRIPT="$(readlink -f "${BASH_SOURCE[0]}")"
 readonly PROGNAME="$(basename "${BASH_SOURCE[0]}")"
-readonly VERSION="0.0.6"
+readonly VERSION="0.0.7"
 readonly -a ARGS=("$@")
 
 msg() {
