@@ -144,8 +144,7 @@ get_theme_dir() {
 
 	# Get data directories from XDG_DATA_DIRS variable and
 	# convert colon-separated list into bash array
-	IFS=: read -ra data_dirs <<< \
-		"${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
+	IFS=: read -ra data_dirs <<< "${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
 
 	for data_dir in "${data_dirs[@]}"; do
 		[ -d "$data_dir/icons" ] || continue
@@ -155,6 +154,7 @@ get_theme_dir() {
 	for icons_dir in "${icons_dirs[@]}"; do
 		[ -f "$icons_dir/$THEME_NAME/index.theme" ] || continue
 		printf '%s' "$icons_dir/$THEME_NAME"
+		verbose "'$THEME_NAME' is found in '$icons_dir'."
 		return 0
 	done
 
@@ -398,7 +398,7 @@ parse_args() {
 	done
 
 	# Reset the positional parameters to the short options
-	eval set -- "${args[@]}"
+	set -- "${args[@]}"
 
 	while getopts ":C:DRlt:uvVh" opt; do
 		case "$opt" in
@@ -459,8 +459,6 @@ main() {
 
 	THEME_DIR="$(get_theme_dir)" \
 		|| fatal "fail to find '$THEME_NAME' icon theme."
-
-	verbose "'$THEME_NAME' is found in '${THEME_DIR%/*}'."
 
 	case "$OPERATION" in
 		change-color)   do_change_color   ;;

@@ -32,7 +32,7 @@ __get_themes() {
 
 _papirus_folders() {
 	local cur prev
-	local -a valid_colors=(black blue bluegrey brown cyan green grey
+	local -a colors=(black blue bluegrey brown cyan green grey
 		magenta orange pink purple red teal violet yellow)
 	local -a opts=(
 		-h --help
@@ -50,7 +50,7 @@ _papirus_folders() {
 
 	case "$prev" in
 		-C|--color)
-			COMPREPLY=( $(compgen -W "${valid_colors[*]}" -- "${cur}") )
+			COMPREPLY=( $(compgen -W "${colors[*]}" -- "${cur}") )
 			return
 			;;
 		-t|--theme)

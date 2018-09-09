@@ -5,9 +5,9 @@
 # @link: https://github.com/PapirusDevelopmentTeam/papirus-folders
 
 _get_colors() {
-	local -a valid_colors=(black blue bluegrey brown cyan green grey
+	local -a colors=(black blue bluegrey brown cyan green grey
 		magenta orange pink purple red teal violet yellow)
-	_wanted colors exlp 'color' compadd -- "${valid_colors[@]}"
+	_wanted colors exlp 'color' compadd -- "${colors[@]}"
 	return 0
 }
 
