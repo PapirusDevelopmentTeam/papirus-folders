@@ -1,30 +1,15 @@
 # Papirus Folders
 
-papirus-folders is a bash script that allows changing the color of folders in [Papirus icon theme](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme) and Papirus' forks (which based on version 20171007 and newer).
+papirus-folders is a bash script that allows changing the color of folders in [Papirus icon theme](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme) and its forks (which based on version 20171007 and newer).
 
-At the moment papirus-folders doesn't have a GUI, but it is a fully functional command-line application.
+## Table of contents
 
-Some examples of use:
-
-- Show the current color and available colors for Papirus-Adapta:
-    ```
-    papirus-folders -l --theme Papirus-Adapta
-    ```
-- Change color of folders to brown for Papirus-Adapta:
-    ```
-    papirus-folders -C brown --theme Papirus-Adapta
-    ```
-- Revert to default color of folders for Papirus-Adapta:
-    ```
-    papirus-folders -D --theme Papirus-Adapta
-    ```
-- Restore the last used color from a config file:
-    ```
-    papirus-folders -R
-    ```
-    This is extremely useful for restoring color after icon theme upgrade (official installers of [papirus-icon-theme](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme) and some third-party packages do this automatically).
-
-**NOTE:** To change the color of an individual folder you can use [Folder Color](http://foldercolor.tuxfamily.org) or [Dolphin Folder Color](https://github.com/audoban/dolphin-folder-color).
+- [Preview](#preview)
+- [Installation](#installation)
+    - [Ubuntu and derivatives](#ubuntu-and-derivatives)
+    - [Papirus Installer](#papirus-installer)
+    - [Third-party packages](#third-party-packages)
+- [Script usage](#script-usage)
 
 ## Preview
 
@@ -39,6 +24,8 @@ Some examples of use:
 | **yellow** | ![folder-yellow](https://cdn.rawgit.com/PapirusDevelopmentTeam/papirus-icon-theme/master/Papirus/48x48/places/folder-yellow.svg) ![user-yellow-home](https://cdn.rawgit.com/PapirusDevelopmentTeam/papirus-icon-theme/master/Papirus/48x48/places/user-yellow-home.svg) ![folder-yellow-download](https://cdn.rawgit.com/PapirusDevelopmentTeam/papirus-icon-theme/master/Papirus/48x48/places/folder-yellow-download.svg)
 
 **NOTE:** This project doesn't provide any folder icons. If you want to request a new folder icon or a new color of folder please open an issue [here](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme/issues/new).
+
+**NOTE:** To change the color of an individual folder you can use [Folder Color](http://foldercolor.tuxfamily.org) or [Dolphin Folder Color](https://github.com/audoban/dolphin-folder-color).
 
 ## Installation
 
@@ -85,3 +72,33 @@ Packages in this section are not part of the official repositories. If you have 
 | Arch Linux | Piotr Górski    | [papirus-folders-git](https://aur.archlinux.org/packages/papirus-folders-git) <sup>AUR</sup> |
 
 **NOTE:** If you are a maintainer and want to be in the list, please create an issue or make a pull request.
+
+### Script usage
+
+Papirus-folders doesn't have a GUI, but it is a fully functional command-line application with TAB-completions. Below you'll see some examples of use.
+
+#### Show the current color and available colors for Papirus-Dark
+
+```
+papirus-folders -l --theme Papirus-Dark
+```
+
+#### Change color of folders to brown for Papirus-Dark
+
+```
+papirus-folders -C brown --theme Papirus-Dark
+```
+
+#### Revert to default color of folders for Papirus-Dark
+
+```
+papirus-folders -D --theme Papirus-Dark
+```
+
+#### Restore the last used color from a config file
+
+```
+papirus-folders -R
+```
+
+The last command is extremely useful for restoring color after icon theme upgrade (official installers of [papirus-icon-theme](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme) and some third-party packages do this automatically).
