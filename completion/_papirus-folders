@@ -29,9 +29,9 @@ _get_themes() {
 	done
 
 	for icons_dir in "${icons_dirs[@]}"; do
-		for icon_theme in "$icons_dir"/*(/); do
+		for icon_theme in "$icons_dir"/*; do
 			[ -f "$icon_theme/48x48/places/folder-blue.svg" ] || continue
-			_wanted icon_themes expl 'icon-theme' compadd -- "${icon_theme:t}"
+			_wanted icon_theme expl 'icon-theme' compadd -- "${icon_theme:t}"
 		done
 	done
 	return 0
