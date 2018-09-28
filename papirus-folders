@@ -86,12 +86,12 @@ _is_root_user() {
 }
 
 _is_system_dir() {
-	# if $THEME_DIR begins with $HOME
-	if [ -z "${THEME_DIR##"$HOME"/*}" ]; then
-		return 1
+	# if $THEME_DIR begins with /usr
+	if [ "${THEME_DIR:0:4}" == "/usr" ]; then
+		return 0
 	fi
 
-	return 0
+	return 1
 }
 
 _is_valid_color() {
