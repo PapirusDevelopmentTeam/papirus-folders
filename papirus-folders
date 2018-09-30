@@ -84,9 +84,11 @@ _is_root_user() {
 	return 1
 }
 
-_is_system_dir() {
-	# if $THEME_DIR begins with /usr
-	if [ "${THEME_DIR:0:4}" == "/usr" ]; then
+_is_user_dir() {
+	[ -n "$HOME" ] || return 1
+
+	# if $THEME_DIR is placed in home dir
+	if [ -z "${THEME_DIR##"$HOME"/*}" ]; then
 		return 0
 	fi
 
@@ -161,19 +163,27 @@ get_theme_dir() {
 }
 
 get_user() {
-	local user user_dir
+	local user=''
 
 	if [ -n "$PKEXEC_UID" ]; then
 		user="$(id -nu "$PKEXEC_UID")"
 	elif [ -n "$SUDO_USER" ]; then
 		user="$SUDO_USER"
+	elif [ -n "$LOGNAME" ]; then
+		user="$LOGNAME"
 	else
-		user="$USER"
+		user="$(id -nu)"
 	fi
 
-	user_dir="$(getent passwd "$user" | awk -F: '{print $6}')"
+	printf '%s' "$user"
+}
 
-	declare -p user user_dir
+get_user_home() {
+	local user
+
+	user="$(get_user)"
+
+	getent passwd "$user" | awk -F: '{print $(NF-1)}'
 }
 
 config() {
@@ -181,10 +191,10 @@ config() {
 	local config_dir
 	local config_file
 
-	if _is_system_dir; then
-		config_dir="/var/lib/$PROGNAME"
-	else
+	if _is_user_dir; then
 		config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/$PROGNAME"
+	else
+		config_dir="/var/lib/$PROGNAME"
 	fi
 
 	config_file="$config_dir/keep"
@@ -320,16 +330,17 @@ do_restore_color() {
 }
 
 delete_icon_caches() {
-	local icon_cache=''
+	local icon_cache user='' user_home=''
 
-	eval "$(get_user)"
+	user="$(get_user)"
+	user_home="$(get_user_home)"
 
 	declare -a icon_caches=(
 		# KDE 5 icon caches
-		"$user_dir/.cache/icon-cache.kcache"
+		"$user_home/.cache/icon-cache.kcache"
 		"/var/tmp/kdecache-$user/icon-cache.kcache"
 		# KDE 4 icon caches
-		"$user_dir/.kde4/cache-$(hostname)/icon-cache.kcache"
+		"$user_home/.kde4/cache-$(hostname)/icon-cache.kcache"
 	)
 
 	verbose "Deleting icon caches ..."
@@ -359,8 +370,8 @@ update_icon_caches() {
 }
 
 verify_privileges() {
-	_is_root_user  && return 0
-	_is_system_dir || return 0
+	_is_root_user && return 0
+	_is_user_dir  && return 0
 
 	verbose "This operation requires root privileges."
 
