@@ -256,7 +256,7 @@ change_color() {
 	local file target symlink
 
 	find -L "$THEME_DIR" -regextype posix-extended \
-		-regex ".*/${sizes_regex}/places/${icons_regex}.*" \
+		-regex ".*/${sizes_regex}/places/${icons_regex}[-.].*" \
 		-print0 | while read -r -d $'\0' file; do
 
 		target="$(basename "$file")"
