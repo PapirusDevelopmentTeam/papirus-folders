@@ -26,7 +26,6 @@ readonly VERSION="0.0.7"
 readonly -a ARGS=("$@")
 
 msg() {
-	[ "$TERM" != "dumb" ] || return 0
 	printf "%s: %b\n" "$PROGNAME" "$*" >&2
 }
 
@@ -246,7 +245,6 @@ change_color() {
 	local icons_regex="(folder|user)-$color"
 	local file target symlink
 
-	# verbose "Changing color of folders to '$color' ..."
 	find -L "$THEME_DIR" -regextype posix-extended \
 		-regex ".*/${sizes_regex}/places/${icons_regex}.*" \
 		-print0 | while read -r -d $'\0' file; do
