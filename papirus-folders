@@ -97,7 +97,7 @@ _is_system_dir() {
 _is_valid_color() {
 	local color="$1"
 
-	eval "$(get_colors)"
+	eval "$(declare_colors)"
 
 	for i in "${colors[@]}"; do
 		[ "$i" == "$color" ] || continue
@@ -107,7 +107,7 @@ _is_valid_color() {
 	return 1
 }
 
-get_colors() {
+declare_colors() {
 	local color=''
 	local -a colors=()
 	local -a valid_colors=("black" "blue" "bluegrey" "brown" "cyan"
@@ -124,7 +124,7 @@ get_colors() {
 	declare -p colors
 }
 
-get_current_color() {
+declare_current_color() {
 	local icon_file icon_name current_color=''
 
 	icon_file=$(readlink -f "$THEME_DIR/48x48/places/folder.svg")
@@ -261,8 +261,8 @@ change_color() {
 list_colors() {
 	local color='' prefix=''
 
-	eval "$(get_colors)"
-	eval "$(get_current_color)"
+	eval "$(declare_colors)"
+	eval "$(declare_current_color)"
 
 	for color in "${colors[@]}"; do
 		if [ "$current_color" == "$color" ]; then
