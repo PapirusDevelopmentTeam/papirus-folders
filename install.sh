@@ -3,9 +3,9 @@
 set -e
 
 # these variables can be overwritten
-PREFIX="${PREFIX:-/usr}"
-TAG="${TAG:-master}"
-uninstall="${uninstall:-false}"
+: "${PREFIX:=/usr}"
+: "${TAG:=master}"
+: "${uninstall:=false}"
 
 bin_name="papirus-folders"
 gh_url="https://github.com/PapirusDevelopmentTeam"
