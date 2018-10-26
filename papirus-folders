@@ -96,7 +96,7 @@ _is_user_dir() {
 }
 
 _is_valid_color() {
-	local color="$1"
+	local color="${1:?${FUNCNAME[-1]}: color is not set}"
 
 	eval "$(declare_colors)"
 
@@ -248,21 +248,25 @@ config() {
 }
 
 change_color() {
-	[ -n "$1" ] || return 1
-
-	local color="$1"
+	local color="${1:?${FUNCNAME[-1]}: color is not set}"
 	local sizes_regex="(22x22|24x24|32x32|48x48|64x64)"
 	local icons_regex="(folder|user)-$color"
-	local file target symlink
+	local file_path file_name symlink_path
+	local -a file_paths=()
 
-	find -L "$THEME_DIR" -regextype posix-extended \
-		-regex ".*/${sizes_regex}/places/${icons_regex}[-.].*" \
-		-print0 | while read -r -d $'\0' file; do
+	# put found files into array
+	mapfile -t -d $'\0' file_paths < <(
+		find -L "$THEME_DIR" -type f -regextype posix-extended \
+			-regex ".*/${sizes_regex}/places/${icons_regex}[-.].*" \
+			-print0
+	)
 
-		target="$(basename "$file")"
-		symlink="${file/-$color/}"
+	for file_path in "${file_paths[@]}"; do
+		file_name="${file_path##*/}"
+		symlink_path="${file_path/-$color/}"  # remove color suffix
 
-		ln -sf "$target" "$symlink" || fatal "cannot create '$symlink' symlink"
+		ln -sf "$file_name" "$symlink_path" \
+			|| fatal "cannot create '$symlink_path' symlink"
 	done
 }
 
