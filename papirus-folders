@@ -10,8 +10,8 @@ if test -z "$BASH_VERSION"; then
 	exit 1
 fi
 
-if (( BASH_VERSINFO[0] * 10 + BASH_VERSINFO[1] < 42 )); then
-	printf "Error: this script requires bash version >= 4.2\n" >&2
+if (( BASH_VERSINFO[0] * 10 + BASH_VERSINFO[1] < 40 )); then
+	printf "Error: this script requires bash version >= 4.0\n" >&2
 	exit 1
 fi
 
@@ -129,7 +129,7 @@ declare_current_color() {
 	local icon_file icon_name current_color=''
 
 	icon_file=$(readlink -f "$THEME_DIR/48x48/places/folder.svg")
-	icon_name=$(basename -s .svg "$icon_file")
+	icon_name=$(basename "$icon_file" .svg)
 	current_color="${icon_name##*-}"
 
 	declare -p current_color
@@ -249,24 +249,23 @@ config() {
 
 change_color() {
 	local color="${1:?${FUNCNAME[-1]}: color is not set}"
-	local sizes_regex="(22x22|24x24|32x32|48x48|64x64)"
-	local icons_regex="(folder|user)-$color"
-	local file_path file_name symlink_path
-	local -a file_paths=()
+	local size prefix file_path file_name symlink_path
+	local -a sizes=(22x22 24x24 32x32 48x48 64x64)
+	local -a prefixes=("folder-$color" "user-$color")
 
-	# put found files into array
-	mapfile -t -d $'\0' file_paths < <(
-		find -L "$THEME_DIR" -type f -regextype posix-extended \
-			-regex ".*/${sizes_regex}/places/${icons_regex}[-.].*" \
-			-print0
-	)
+	for size in "${sizes[@]}"; do
+		for prefix in "${prefixes[@]}"; do
+			for file_path in "$THEME_DIR/$size/places/$prefix"{-*,}.svg; do
+				[ -f "$file_path" ] || continue  # is a file
+				[ -L "$file_path" ] && continue  # is not a symlink
 
-	for file_path in "${file_paths[@]}"; do
-		file_name="${file_path##*/}"
-		symlink_path="${file_path/-$color/}"  # remove color suffix
+				file_name="${file_path##*/}"
+				symlink_path="${file_path/-$color/}"  # remove color suffix
 
-		ln -sf "$file_name" "$symlink_path" \
-			|| fatal "cannot create '$symlink_path' symlink"
+				ln -sf "$file_name" "$symlink_path" \
+					|| fatal "cannot create '$symlink_path' symlink"
+			done
+		done
 	done
 }
 
