@@ -1,3 +1,6 @@
+# GNU make is required to run this file. To install on *BSD, run:
+#   gmake PREFIX=/usr/local install
+
 PREFIX ?= /usr
 PROGNAME := papirus-folders
 VERSION ?=
@@ -36,3 +39,8 @@ release:
 
 
 .PHONY: all install uninstall _get_version bump release
+
+# .BEGIN is ignored by GNU make so we can use it as a guard
+.BEGIN:
+	@head -3 Makefile
+	@false

@@ -54,7 +54,7 @@ wget -qO- https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folde
 To install papirus-folders on **BSD systems** using the following command:
 
 ```
-wget -qO- https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/install.sh | env TAG=xBSD PREFIX=/usr/local sh
+wget -qO- https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/install.sh | env PREFIX=/usr/local sh
 ```
 
 #### Uninstall
