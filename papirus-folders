@@ -96,7 +96,7 @@ _is_user_dir() {
 }
 
 _is_valid_color() {
-	local color="${1:?${FUNCNAME[-1]}: color is not set}"
+	local color="$1"
 
 	eval "$(declare_colors)"
 
@@ -263,7 +263,7 @@ change_color() {
 				symlink_path="${file_path/-$color/}"  # remove color suffix
 
 				ln -sf "$file_name" "$symlink_path" \
-					|| fatal "cannot create '$symlink_path' symlink"
+					|| fatal "Fail to create '$symlink_path' symlink"
 			done
 		done
 	done
@@ -288,7 +288,7 @@ list_colors() {
 
 do_change_color() {
 	_is_valid_color "$SELECTED_COLOR" \
-		|| fatal "'$SELECTED_COLOR' is not a valid color"
+		|| fatal "Unable to find '$SELECTED_COLOR' color in '$THEME_NAME'"
 
 	verify_privileges
 
@@ -315,21 +315,19 @@ do_restore_color() {
 		THEME_NAME="$(config --get theme)"
 		saved_color="$(config --get color)"
 	else
-		_exit "Config file not found."
+		_exit "Unable to find config file."
 	fi
 
-	THEME_DIR="$(get_theme_dir)" || _exit "'$THEME_NAME' not found."
+	THEME_DIR="$(get_theme_dir)" \
+		|| _exit "Unable to find '$THEME_NAME' icon theme."
 
-	if [ -z "$saved_color" ]; then
-		_exit "cannot get color from a config file."
-	elif _is_valid_color "$saved_color"; then
-		verify_privileges
+	_is_valid_color "$saved_color" \
+		|| _exit "Unable to find '$saved_color' color in '$THEME_NAME'."
 
-		change_color "$saved_color"
-		msg "'$saved_color' color of the folders has been restored."
-	else
-		_exit "cannot restore '$saved_color' color of folders."
-	fi
+	verify_privileges
+
+	change_color "$saved_color"
+	msg "'$saved_color' color of the folders has been restored."
 }
 
 delete_icon_caches() {
@@ -356,7 +354,7 @@ delete_icon_caches() {
 update_icon_cache() {
 	delete_icon_caches
 
-	verbose "Rebuilding icon cache ..."
+	verbose "Rebuilding icon cache for '$THEME_NAME' ..."
 	gtk-update-icon-cache -qf "$THEME_DIR" || true
 }
 
@@ -470,7 +468,7 @@ main() {
 	parse_args "${ARGS[@]}"
 
 	THEME_DIR="$(get_theme_dir)" \
-		|| fatal "fail to find '$THEME_NAME' icon theme."
+		|| fatal "Fail to find '$THEME_NAME' icon theme."
 
 	case "$OPERATION" in
 		change-color)   do_change_color   ;;
