@@ -10,6 +10,6 @@ Bugs: https://github.com/PapirusDevelopmentTeam/papirus-folders/issues
 Package: papirus-folders
 Architecture: all
 Multi-Arch: foreign
-Depends: ${misc:Depends}, bash (>= 4.2), findutils, awk
+Depends: ${misc:Depends}, bash (>= 4.0)
 Recommends: papirus-icon-theme (>= 20171007)
 Description: This package allows you to change the color of folders
