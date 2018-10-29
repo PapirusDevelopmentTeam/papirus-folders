@@ -98,7 +98,7 @@ papirus-folders -D --theme Papirus-Dark
 #### Restore the last used color from a config file
 
 ```
-papirus-folders -R
+papirus-folders -Ru
 ```
 
 The last command is extremely useful for restoring color after icon theme upgrade (official installers of [papirus-icon-theme](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme) and some third-party packages do this automatically).
