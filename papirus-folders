@@ -390,15 +390,15 @@ parse_args() {
 	# Translate --gnu-long-options to -g (short options)
 	for arg; do
 		case "$arg" in
-			--help)          args+=( -h ) ;;
-			--list)          args+=( -l ) ;;
-			--theme)         args+=( -t ) ;;
-			--update-caches) args+=( -u ) ;;
-			--verbose)       args+=( -v ) ;;
-			--color)         args+=( -C ) ;;
-			--default)       args+=( -D ) ;;
-			--restore)       args+=( -R ) ;;
-			--version)       args+=( -V ) ;;
+			--help)           args+=( -h ) ;;
+			--list)           args+=( -l ) ;;
+			--theme)          args+=( -t ) ;;
+			--update-caches)  args+=( -u ) ;;
+			--verbose)        args+=( -v ) ;;
+			--color|--colour) args+=( -C ) ;;
+			--default)        args+=( -D ) ;;
+			--restore)        args+=( -R ) ;;
+			--version)        args+=( -V ) ;;
 			--[0-9a-Z]*)
 				err "illegal option -- '$arg'"
 				usage 128
