@@ -303,7 +303,7 @@ do_revert_default() {
 	verify_privileges
 
 	msg "Restoring default folder color for '$THEME_NAME' ..."
-	change_color "${DEFAULT_COLORS[$THEME_NAME]}"
+	change_color "${DEFAULT_COLORS[$THEME_NAME]:-blue}"
 	config --new
 	update_icon_cache
 }
@@ -456,9 +456,6 @@ main() {
 		['ePapirus']='blue'
 		['Papirus']='blue'
 		['Papirus-Dark']='blue'
-		['Papirus-Light']='blue'
-		['Papirus-Adapta']='cyan'
-		['Papirus-Adapta-Nokto']='cyan'
 	)
 
 	declare OPERATION=''
