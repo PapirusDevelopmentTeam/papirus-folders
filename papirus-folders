@@ -48,10 +48,6 @@ fatal() {
 	exit 1
 }
 
-opt_err() {
-	fatal "only one operation may be used at a time."
-}
-
 usage() {
 	cat >&2 <<- EOF
 	usage:
@@ -412,19 +408,14 @@ parse_args() {
 
 	while getopts ":C:DRlt:uvVh" opt; do
 		case "$opt" in
-			C ) [ -z "$OPERATION" ] || opt_err
-				OPERATION="change-color"
+			C ) OPERATIONS+=("change-color")
 				SELECTED_COLOR="$OPTARG"
 				;;
-			D ) [ -z "$OPERATION" ] || opt_err
-				OPERATION="revert-default"
-				;;
-			R ) [ -z "$OPERATION" ] || opt_err
-				OPERATION="restore-color"
-				;;
-			l ) OPTIONS+=("list-colors") ;;
+			D ) OPERATIONS+=("revert-default") ;;
+			R ) OPERATIONS+=("restore-color") ;;
+			l ) OPERATIONS+=("list-colors") ;;
 			t ) THEME_NAME="$OPTARG" ;;
-			u ) OPTIONS+=("update-icon-caches") ;;
+			u ) OPERATIONS+=("update-icon-caches") ;;
 			v ) VERBOSE=1 ;;
 			V ) printf "%s %s\n" "$PROGNAME" "$VERSION"
 				exit 0
@@ -458,23 +449,25 @@ main() {
 		['Papirus-Dark']='blue'
 	)
 
-	declare OPERATION=''
 	declare SELECTED_COLOR=''
-	declare -a OPTIONS=()
+	declare -a OPERATIONS=()
 
 	parse_args "${ARGS[@]}"
 
 	THEME_DIR="$(get_theme_dir)" \
 		|| fatal "Fail to find '$THEME_NAME' icon theme."
 
-	case "$OPERATION" in
-		change-color)   do_change_color   ;;
-		revert-default) do_revert_default ;;
-		restore-color)  do_restore_color  ;;
-	esac
-
-	for option in "${OPTIONS[@]}"; do
-		case "$option" in
+	for operation in "${OPERATIONS[@]}"; do
+		case "$operation" in
+			change-color)
+				do_change_color
+				;;
+			revert-default)
+				do_revert_default
+				;;
+			restore-color)
+				do_restore_color
+				;;
 			list-colors)
 				cat <<- EOF
 				List of available colors:
