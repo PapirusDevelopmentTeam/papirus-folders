@@ -67,10 +67,10 @@ wget -qO- https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folde
 
 Packages in this section are not part of the official repositories. If you have a problem or a question, please contact the package maintainer.
 
-| **Distro**    | **Maintainer**  | **Package**                              |
-| :------------ | :-------------- | :--------------------------------------- |
-| Arch Linux    | Piotr Górski    | [papirus-folders-git](https://aur.archlinux.org/packages/papirus-folders-git) <sup>AUR</sup> |
-| NetBSD/pkgsrc | nia             | [papirus-folders](http://pkgsrc.se/graphics/papirus-folders)
+| **Distro**  | **Maintainer**  | **Package**                              |
+| :---------- | :-------------- | :--------------------------------------- |
+| Arch Linux  | Piotr Górski    | [papirus-folders-git](https://aur.archlinux.org/packages/papirus-folders-git) <sup>AUR</sup> |
+| NetBSD      | nia             | [papirus-folders](http://pkgsrc.se/graphics/papirus-folders) <sup>pkgsrc</sup> |
 
 **NOTE:** If you are a maintainer and want to be in the list, please create an issue or make a pull request.
 
