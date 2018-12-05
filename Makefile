@@ -23,9 +23,7 @@ uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/share/zsh/vendor-completions/_$(PROGNAME)
 
 _get_version:
-ifndef VERSION
-	$(error VERSION is not defined. Pass via "make bump VERSION=0.1.2")
-endif
+	$(if $(VERSION),,$(error VERSION is not defined. Pass via "make bump VERSION=0.1.2"))
 
 bump: _get_version
 	sed -i '/VERSION=/s/[0-9.]\+/$(VERSION)/' $(PROGNAME)
