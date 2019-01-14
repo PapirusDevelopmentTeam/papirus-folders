@@ -487,8 +487,10 @@ main() {
 	done
 
 	verbose "Done!"
+
+	exit 0
 }
 
 main
 
-exit 0
+exit 1
