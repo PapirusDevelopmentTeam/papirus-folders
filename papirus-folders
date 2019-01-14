@@ -50,23 +50,23 @@ fatal() {
 
 usage() {
 	cat >&2 <<- EOF
-	usage:
-	 $PROGNAME [options] -t <theme> {-C --color} <color>
-	 $PROGNAME [options] -t <theme> {-D --default}
-	 $PROGNAME [options] -t <theme> {-R --restore}
+	USAGE
+	  $ $PROGNAME [options] -t <theme> {-C --color} <color>
+	  $ $PROGNAME [options] -t <theme> {-D --default}
+	  $ $PROGNAME [options] -t <theme> {-R --restore}
 
-	OPERATIONS:
-	 -C --color <color>  change color of folders
-	 -D --default        back to the default color
-	 -R --restore        restore the last used color from the config file
+	OPERATIONS
+	  -C --color <color>  change color of folders
+	  -D --default        back to the default color
+	  -R --restore        restore the last used color from the config file
 
-	OPTIONS:
-	 -l --list           show available colors
-	 -t --theme <theme>  make changes to the specified theme instead of Papirus
-	 -u --update-caches  update icon caches for Papirus and siblings
-	 -V --version        print $PROGNAME version and exit
-	 -v --verbose        be verbose
-	 -h --help           show this help
+	OPTIONS
+	  -l --list           show available colors
+	  -t --theme <theme>  make changes to the specified theme (Default: Papirus)
+	  -u --update-caches  update icon caches for Papirus and siblings
+	  -V --version        print $PROGNAME version and exit
+	  -v --verbose        be verbose
+	  -h --help           show this help
 	EOF
 
 	exit "${1:-0}"
@@ -380,6 +380,11 @@ verify_privileges() {
 parse_args() {
 	local arg='' opt=''
 	local -a args=()
+
+	# Show help if no argument is passed
+	if [ -z "$1" ]; then
+		usage 128
+	fi
 
 	# Translate --gnu-long-options to -g (short options)
 	for arg; do
