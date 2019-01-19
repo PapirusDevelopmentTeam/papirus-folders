@@ -26,6 +26,8 @@ papirus-folders is a bash script that allows changing the color of folders in [P
 
 **NOTE:** This project doesn't provide any folder icons. If you want to request a new folder icon or a new color of folder please open an issue [here](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme/issues/new).
 
+**NOTE:** If you want to change the color of folders to your own or use presets for popular themes, see [Oomox theme designer](https://github.com/themix-project/oomox).
+
 **NOTE:** To change the color of an individual folder you can use [Folder Color](http://foldercolor.tuxfamily.org) or [Dolphin Folder Color](https://github.com/audoban/dolphin-folder-color).
 
 ## Installation
