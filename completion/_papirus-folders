@@ -5,8 +5,8 @@
 # @link: https://github.com/PapirusDevelopmentTeam/papirus-folders
 
 _get_colors() {
-	local -a colors=(black blue bluegrey brown cyan green grey
-		indigo magenta orange pink purple red teal violet white
+	local -a colors=(black blue bluegrey brown cyan deeporange green
+		grey indigo magenta orange pink purple red teal violet white
 		yellow)
 	_wanted colors exlp 'color' compadd -- "${colors[@]}"
 	return 0

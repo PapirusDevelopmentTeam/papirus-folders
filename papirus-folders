@@ -108,8 +108,8 @@ declare_colors() {
 	local color=''
 	local -a colors=()
 	local -a valid_colors=("black" "blue" "bluegrey" "brown" "cyan"
-		"green" "grey" "indigo" "magenta" "orange" "pink" "purple"
-		"red" "teal" "violet" "white" "yellow")
+		"deeporange" "green" "grey" "indigo" "magenta" "orange"
+		"pink" "purple" "red" "teal" "violet" "white" "yellow")
 
 	for color in "${valid_colors[@]}"; do
 		if [ -e "$THEME_DIR/48x48/places/folder-$color.svg" ]; then
