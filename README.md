@@ -69,13 +69,17 @@ wget -qO- https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folde
 
 ### Third-party packages
 
-Packages in this section are not part of the official repositories. If you have a problem or a question, please contact the package maintainer.
+Packages listed in this section are third-party packages. If you have a problem or a question, please contact the package maintainer.
+
+Please note that some packages in the list may be outdated, open [Repology](https://repology.org/project/papirus-folders/versions) to find out package versions.
 
 | **Distro** | **Maintainer** | **Package**  |
 | :--------- | :------------- | :----------- |
 | Arch Linux | Piotr Górski   | [papirus-folders-git](https://aur.archlinux.org/packages/papirus-folders-git) <sup>AUR</sup> |
-| NetBSD     | nia            | [papirus-folders](http://pkgsrc.se/graphics/papirus-folders) <sup>pkgsrc</sup> |
+| MX Linux   | Steven Pusser  | `sudo apt-get install papirus-folders` |
+| NetBSD     | Nia Alarie     | [papirus-folders](http://pkgsrc.se/graphics/papirus-folders) <sup>pkgsrc</sup> |
 | openSUSE   | Alexander Ahjolinna | [papirus-folders](https://software.opensuse.org/download.html?project=home:ahjolinna&package=papirus-folders) <sup>OBS [[link](https://build.opensuse.org/package/show/home:ahjolinna/papirus-folders)]</sub> |
+| Void Linux | Benjamín Albiñana | `sudo xbps-install -S papirus-folders` |
 
 
 **NOTE:** If you are a maintainer and want to be in the list, please create an issue or make a pull request.
