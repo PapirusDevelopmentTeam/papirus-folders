@@ -4,6 +4,7 @@
 PREFIX ?= /usr
 PROGNAME := papirus-folders
 VERSION ?=
+ZSHCOMPDIR ?= $(PREFIX)/share/zsh/vendor-completions
 
 all:
 
@@ -13,14 +14,14 @@ install:
 	mkdir -p $(DESTDIR)$(PREFIX)/share/bash-completion/completions
 	install -m 644 completion/$(PROGNAME) \
 		$(DESTDIR)$(PREFIX)/share/bash-completion/completions
-	mkdir -p $(DESTDIR)$(PREFIX)/share/zsh/vendor-completions
+	mkdir -p $(DESTDIR)$(ZSHCOMPDIR)
 	install -m 644 completion/_$(PROGNAME) \
-		$(DESTDIR)$(PREFIX)/share/zsh/vendor-completions
+		$(DESTDIR)$(ZSHCOMPDIR)
 
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/$(PROGNAME)
 	rm -f $(DESTDIR)$(PREFIX)/share/bash-completion/completions/$(PROGNAME)
-	rm -f $(DESTDIR)$(PREFIX)/share/zsh/vendor-completions/_$(PROGNAME)
+	rm -f $(DESTDIR)$(ZSHCOMPDIR)/_$(PROGNAME)
 
 _get_version:
 	$(if $(VERSION),,$(error VERSION is not defined. Pass via "make bump VERSION=0.1.2"))

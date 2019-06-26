@@ -54,6 +54,7 @@ _uninstall() {
     _msg "Deleting $gh_desc ..."
     _rm "$PREFIX/bin/$bin_name"
     _rm "$PREFIX/share/bash-completion/completions/$bin_name"
+    _rm "$PREFIX/share/zsh/site-functions/_$bin_name"
     _rm "$PREFIX/share/zsh/vendor-completions/_$bin_name"
 }
 
@@ -68,9 +69,14 @@ _install() {
     sudo mkdir -p "$PREFIX/share/bash-completion/completions"
     sudo install -m 644 "$temp_dir/$gh_repo-$tag/completion/$bin_name" \
         "$PREFIX/share/bash-completion/completions"
-    sudo mkdir -p "$PREFIX/share/zsh/vendor-completions"
-    sudo install -m 644 "$temp_dir/$gh_repo-$tag/completion/_$bin_name" \
-        "$PREFIX/share/zsh/vendor-completions"
+    if [ -d "$PREFIX/share/zsh/site-functions" ]; then
+        sudo install -m 644 "$temp_dir/$gh_repo-$tag/completion/_$bin_name" \
+            "$PREFIX/share/zsh/site-functions"
+    elif [ -d "$PREFIX/share/zsh/vendor-completions" ]; then
+        sudo install -m 644 "$temp_dir/$gh_repo-$tag/completion/_$bin_name" \
+            "$PREFIX/share/zsh/vendor-completions"
+    else :
+    fi
 }
 
 _cleanup() {
