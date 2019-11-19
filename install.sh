@@ -33,7 +33,7 @@ cat <<- EOF
 EOF
 
 _msg() {
-    echo "=>" "$@" >&2
+    echo "=>" "$@"
 }
 
 _rm() {

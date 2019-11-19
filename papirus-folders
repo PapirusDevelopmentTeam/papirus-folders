@@ -26,30 +26,30 @@ readonly VERSION="1.5.0"
 readonly -a ARGS=("$@")
 
 msg() {
-	printf "%s: %b\n" "$PROGNAME" "$*" >&2
+	printf "%s: %b\n" "$PROGNAME" "$*"
 }
 
 verbose() {
-	[ "$VERBOSE" -eq 1 ] || return 0
-	msg "$@"
+	[ -t 4 ] || return 0
+	msg "$@" >&4
 }
 
 err() {
-	msg "Error:" "$@"
+	msg "Error:" "$*" >&2
 }
 
 _exit() {
-	msg "$@" "Exiting ..."
+	msg "$*" "Exiting ..."
 	exit 0
 }
 
 fatal() {
-	err "$@"
+	err "$*"
 	exit 1
 }
 
 usage() {
-	cat >&2 <<- EOF
+	cat <<- EOF
 	USAGE
 	  $ $PROGNAME [options] -t <theme> {-C --color} <color>
 	  $ $PROGNAME [options] -t <theme> {-D --default}
@@ -457,6 +457,13 @@ main() {
 	declare -a OPERATIONS=()
 
 	parse_args "${ARGS[@]}"
+
+	if [ "$VERBOSE" -eq "1" ]; then
+		# open a file descriptor for verbose messages
+		exec 4>&1
+		# close the file descriptor before exiting
+		trap 'exec 4>&-' EXIT HUP INT TERM
+	fi
 
 	THEME_DIR="$(get_theme_dir)" \
 		|| fatal "Fail to find '$THEME_NAME' icon theme."
