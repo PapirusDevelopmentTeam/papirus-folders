@@ -464,12 +464,12 @@ main() {
 		trap 'exec 4>&-' EXIT HUP INT TERM
 	fi
 
-	THEME_DIR="$(get_theme_dir)" \
-		|| fatal "Fail to find '$THEME_NAME' icon theme."
-
 	# set USER_HOME variable instead HOME to prevent changing user's icons
 	# when running with sudo
 	USER_HOME="$(get_user_home "$(id -nu)")"
+
+	THEME_DIR="$(get_theme_dir)" \
+		|| fatal "Fail to find '$THEME_NAME' icon theme."
 
 	for operation in "${OPERATIONS[@]}"; do
 		case "$operation" in
