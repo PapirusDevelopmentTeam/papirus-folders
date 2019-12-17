@@ -371,7 +371,8 @@ verify_privileges() {
 	verbose "This operation requires root privileges."
 
 	if command -v sudo > /dev/null; then
-		exec sudo XDG_DATA_DIRS="$XDG_DATA_DIRS" "$THIS_SCRIPT" "${ARGS[@]}"
+		exec sudo USER_HOME="$USER_HOME" XDG_DATA_DIRS="$XDG_DATA_DIRS" \
+			"$THIS_SCRIPT" "${ARGS[@]}"
 	else
 		fatal "You need to be root to run this command."
 	fi
@@ -466,7 +467,7 @@ main() {
 
 	# set USER_HOME variable instead HOME to prevent changing user's icons
 	# when running with sudo
-	USER_HOME="$(get_user_home "$(id -nu)")"
+	[ -n "$USER_HOME" ] || USER_HOME="$(get_user_home "$(id -nu)")"
 
 	THEME_DIR="$(get_theme_dir)" \
 		|| fatal "Fail to find '$THEME_NAME' icon theme."
