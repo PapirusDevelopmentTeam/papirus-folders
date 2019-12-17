@@ -81,10 +81,10 @@ _is_root_user() {
 }
 
 _is_user_dir() {
-	[ -n "$HOME" ] || return 1
+	[ -n "$USER_HOME" ] || return 1
 
 	# if $THEME_DIR is placed in home dir
-	if [ -z "${THEME_DIR##"$HOME"/*}" ]; then
+	if [ -z "${THEME_DIR##"$USER_HOME"/*}" ]; then
 		return 0
 	fi
 
@@ -136,8 +136,8 @@ get_theme_dir() {
 	local data_dir icons_dir
 	local -a data_dirs=()
 	local -a icons_dirs=(
-		"$HOME/.icons"
-		"${XDG_DATA_HOME:-$HOME/.local/share}/icons"
+		"$USER_HOME/.icons"
+		"${XDG_DATA_HOME:-$USER_HOME/.local/share}/icons"
 	)
 
 	# Get data directories from XDG_DATA_DIRS variable and
@@ -159,7 +159,8 @@ get_theme_dir() {
 	return 1
 }
 
-get_user() {
+get_real_user() {
+	# return name of the user that runs the script
 	local user=''
 
 	if [ -n "$PKEXEC_UID" ]; then
@@ -174,9 +175,7 @@ get_user() {
 }
 
 get_user_home() {
-	local user
-
-	user="$(get_user)"
+	local user="$1"
 
 	getent passwd "$user" | awk -F: '{print $(NF-1)}'
 }
@@ -187,7 +186,7 @@ config() {
 	local config_file
 
 	if _is_user_dir; then
-		config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/$PROGNAME"
+		config_dir="${XDG_CONFIG_HOME:-$USER_HOME/.config}/$PROGNAME"
 	else
 		config_dir="/var/lib/$PROGNAME"
 	fi
@@ -326,17 +325,17 @@ do_restore_color() {
 }
 
 delete_icon_caches() {
-	local icon_cache user='' user_home=''
+	local icon_cache real_user='' real_home=''
 
-	user="$(get_user)"
-	user_home="$(get_user_home)"
+	real_user="$(get_real_user)"
+	real_home="$(get_user_home "$real_user")"
 
 	declare -a icon_caches=(
 		# KDE 5 icon caches
-		"$user_home/.cache/icon-cache.kcache"
-		"/var/tmp/kdecache-$user/icon-cache.kcache"
+		"$real_home/.cache/icon-cache.kcache"
+		"/var/tmp/kdecache-$real_user/icon-cache.kcache"
 		# KDE 4 icon caches
-		"$user_home/.kde4/cache-$(hostname)/icon-cache.kcache"
+		"$real_home/.kde4/cache-$(hostname)/icon-cache.kcache"
 	)
 
 	verbose "Deleting icon caches ..."
@@ -467,6 +466,10 @@ main() {
 
 	THEME_DIR="$(get_theme_dir)" \
 		|| fatal "Fail to find '$THEME_NAME' icon theme."
+
+	# set USER_HOME variable instead HOME to prevent changing user's icons
+	# when running with sudo
+	USER_HOME="$(get_user_home "$(id -nu)")"
 
 	for operation in "${OPERATIONS[@]}"; do
 		case "$operation" in
