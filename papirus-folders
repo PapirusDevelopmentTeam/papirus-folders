@@ -91,6 +91,14 @@ _is_user_dir() {
 	return 1
 }
 
+_is_writable() {
+	if [ -w "$THEME_DIR/48x48/places/folder.svg" ]; then
+		return 0
+	fi
+
+	return 1
+}
+
 _is_valid_color() {
 	local color="$1"
 
@@ -367,6 +375,7 @@ update_icon_caches() {
 verify_privileges() {
 	_is_root_user && return 0
 	_is_user_dir  && return 0
+	_is_writable  && return 0
 
 	verbose "This operation requires root privileges."
 
@@ -469,8 +478,16 @@ main() {
 	# when running with sudo
 	[ -n "$USER_HOME" ] || USER_HOME="$(get_user_home "$(id -nu)")"
 
-	THEME_DIR="$(get_theme_dir)" \
-		|| fatal "Fail to find '$THEME_NAME' icon theme."
+	if [ -f "$THEME_NAME/index.theme" ]; then
+		# THEME_NAME is a path to an icon theme
+		THEME_DIR="$(readlink -f "$THEME_NAME")"
+		THEME_NAME="$(basename "$THEME_DIR")"
+		verbose "The path to '$THEME_DIR' theme is specified."
+	else
+		THEME_DIR="$(get_theme_dir)" || {
+			fatal "Fail to find '$THEME_NAME' icon theme."
+		}
+	fi
 
 	for operation in "${OPERATIONS[@]}"; do
 		case "$operation" in
