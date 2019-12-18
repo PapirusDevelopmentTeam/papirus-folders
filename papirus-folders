@@ -62,6 +62,7 @@ usage() {
 
 	OPTIONS
 	  -l --list           show available colors
+	  -o --once           do not save the changes to the config file
 	  -t --theme <theme>  make changes to the specified theme (Default: Papirus)
 	  -u --update-caches  update icon caches for Papirus and siblings
 	  -V --version        print $PROGNAME version and exit
@@ -230,6 +231,7 @@ config() {
 				fi
 				;;
 			-s|--set) shift;
+				[ "$ONCE" -eq "1" ] && break
 				[ -d "$config_dir"  ] || mkdir -p "$config_dir"
 				[ -f "$config_file" ] || touch "$config_file"
 
@@ -401,6 +403,7 @@ parse_args() {
 		case "$arg" in
 			--help)           args+=( -h ) ;;
 			--list)           args+=( -l ) ;;
+			--once)           args+=( -o ) ;;
 			--theme)          args+=( -t ) ;;
 			--update-caches)  args+=( -u ) ;;
 			--verbose)        args+=( -v ) ;;
@@ -419,7 +422,7 @@ parse_args() {
 	# Reset the positional parameters to the short options
 	set -- "${args[@]}"
 
-	while getopts ":C:DRlt:uvVh" opt; do
+	while getopts ":C:DRlot:uvVh" opt; do
 		case "$opt" in
 			C ) OPERATIONS+=("change-color")
 				SELECTED_COLOR="$OPTARG"
@@ -427,6 +430,7 @@ parse_args() {
 			D ) OPERATIONS+=("revert-default") ;;
 			R ) OPERATIONS+=("restore-color") ;;
 			l ) OPERATIONS+=("list-colors") ;;
+			o ) ONCE=1 ;;
 			t ) THEME_NAME="$OPTARG" ;;
 			u ) OPERATIONS+=("update-icon-caches") ;;
 			v ) VERBOSE=1 ;;
@@ -456,6 +460,7 @@ main() {
 	# default values of options
 	declare THEME_NAME="${THEME_NAME:-Papirus}"
 	declare -i VERBOSE="${VERBOSE:-0}"
+	declare -i ONCE="${ONCE:-0}"
 	declare -A DEFAULT_COLORS=(
 		['ePapirus']='blue'
 		['Papirus']='blue'
