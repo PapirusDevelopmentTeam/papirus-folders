@@ -52,19 +52,19 @@ Use the script to install the latest version directly from this repo (independen
 #### Install
 
 ```
-wget -qO- https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/install.sh | sh
+wget -qO- https://git.io/papirus-folders-install | sh
 ```
 
 To install papirus-folders on **BSD systems** using the following command:
 
 ```
-wget -qO- https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/install.sh | env PREFIX=/usr/local sh
+wget -qO- https://git.io/papirus-folders-install | env PREFIX=/usr/local sh
 ```
 
 #### Uninstall
 
 ```
-wget -qO- https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/install.sh | env uninstall=true sh
+wget -qO- https://git.io/papirus-folders-install | env uninstall=true sh
 ```
 
 ### Third-party packages
