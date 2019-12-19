@@ -266,8 +266,9 @@ change_color() {
 				file_name="${file_path##*/}"
 				symlink_path="${file_path/-$color/}"  # remove color suffix
 
-				ln -sf "$file_name" "$symlink_path" \
-					|| fatal "Fail to create '$symlink_path' symlink"
+				ln -sf "$file_name" "$symlink_path" || {
+					fatal "Fail to create '$symlink_path' symlink"
+				}
 			done
 		done
 	done
@@ -291,13 +292,13 @@ list_colors() {
 }
 
 do_change_color() {
-	_is_valid_color "$SELECTED_COLOR" \
-		|| fatal "Unable to find '$SELECTED_COLOR' color in '$THEME_NAME'"
+	_is_valid_color "$SELECTED_COLOR" || {
+		fatal "Unable to find '$SELECTED_COLOR' color in '$THEME_NAME'"
+	}
 
 	verify_privileges
 
-	msg "Changing color of folders to '$SELECTED_COLOR'" \
-		"for '$THEME_NAME' ..."
+	msg "Changing color of folders to '$SELECTED_COLOR' for '$THEME_NAME' ..."
 	change_color "$SELECTED_COLOR"
 	config --new --set "theme=$THEME_NAME" "color=$SELECTED_COLOR"
 	update_icon_cache
@@ -322,11 +323,13 @@ do_restore_color() {
 		_exit "Unable to find config file."
 	fi
 
-	THEME_DIR="$(get_theme_dir)" \
-		|| _exit "Unable to find '$THEME_NAME' icon theme."
+	THEME_DIR="$(get_theme_dir)" || {
+		_exit "Unable to find '$THEME_NAME' icon theme."
+	}
 
-	_is_valid_color "$saved_color" \
-		|| _exit "Unable to find '$saved_color' color in '$THEME_NAME'."
+	_is_valid_color "$saved_color" || {
+		_exit "Unable to find '$saved_color' color in '$THEME_NAME'."
+	}
 
 	verify_privileges
 
