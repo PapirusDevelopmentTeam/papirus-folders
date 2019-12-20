@@ -46,6 +46,7 @@ _arguments -C \
 	'(-D --default)'{-D,--default}'[back to the default color]' \
 	'(-R --restore)'{-R,--restore}'[restore the last used color from the config file]' \
 	'(-l --list)'{-l,--list}'[show available colors]' \
+	'(-o --once)'{-o,--once}'[do not save the changes to the config file]' \
 	'(-t --theme)'{-t,--theme}'[make changes to the specified theme]:icon-theme:_get_themes' \
 	'(-u --update-caches)'{-u,--update-caches}'[update icon caches]'
 

@@ -43,6 +43,7 @@ _papirus_folders() {
 		-D --default
 		-R --restore
 		-l --list
+		-o --once
 		-t --theme
 		-u --update-caches
 	)
