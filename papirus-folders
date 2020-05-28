@@ -347,8 +347,6 @@ delete_icon_caches() {
 		# KDE 5 icon caches
 		"$real_home/.cache/icon-cache.kcache"
 		"/var/tmp/kdecache-$real_user/icon-cache.kcache"
-		# KDE 4 icon caches
-		"$real_home/.kde4/cache-$(hostname)/icon-cache.kcache"
 	)
 
 	verbose "Deleting icon caches ..."
