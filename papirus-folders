@@ -116,8 +116,8 @@ _is_valid_color() {
 declare_colors() {
 	local color=''
 	local -a colors=()
-	local -a valid_colors=("black" "blue" "bluegrey" "brown" "cyan"
-		"deeporange" "green" "grey" "indigo" "magenta" "nordic"
+	local -a valid_colors=("black" "blue" "bluegrey" "breeze" "brown"
+		"cyan" "deeporange" "green" "grey" "indigo" "magenta" "nordic"
 		"orange" "palebrown" "pink" "purple" "red" "teal" "violet"
 		"white" "yaru" "yellow")
 
