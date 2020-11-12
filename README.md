@@ -80,7 +80,7 @@ Please note that some packages in the list may be outdated, open [Repology](http
 | Arch Linux | Piotr Górski   | [papirus-folders-git](https://aur.archlinux.org/packages/papirus-folders-git) <sup>AUR</sup> |
 | MX Linux   | Steven Pusser  | `sudo apt-get install papirus-folders` |
 | NetBSD     | Nia Alarie     | [papirus-folders](http://pkgsrc.se/graphics/papirus-folders) <sup>pkgsrc</sup> |
-| openSUSE   | Alexander Ahjolinna | [papirus-folders](https://software.opensuse.org/download.html?project=home:ahjolinna&package=papirus-folders) <sup>OBS [[link](https://build.opensuse.org/package/show/home:ahjolinna/papirus-folders)]</sub> |
+| openSUSE   | andy great     | [papirus-folders](https://software.opensuse.org/package/papirus-folders) <sup>OBS [[link](https://build.opensuse.org/package/show/openSUSE:Factory/papirus-folders)]</sub> |
 | Void Linux | Benjamín Albiñana | `sudo xbps-install -S papirus-folders` |
 
 
