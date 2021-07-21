@@ -10,6 +10,7 @@ papirus-folders is a bash script that allows changing the color of folders in [P
     - [Papirus Installer](#papirus-installer)
     - [Third-party packages](#third-party-packages)
 - [Script usage](#script-usage)
+- [Related projects](#related-projects)
 
 ## Preview
 
@@ -29,10 +30,6 @@ papirus-folders is a bash script that allows changing the color of folders in [P
 | **yellow** | ![folder-yellow](https://cdn.jsdelivr.net/gh/PapirusDevelopmentTeam/papirus-icon-theme@master/Papirus/48x48/places/folder-yellow.svg) ![user-yellow-home](https://cdn.jsdelivr.net/gh/PapirusDevelopmentTeam/papirus-icon-theme@master/Papirus/48x48/places/user-yellow-home.svg) ![folder-yellow-download](https://cdn.jsdelivr.net/gh/PapirusDevelopmentTeam/papirus-icon-theme@master/Papirus/48x48/places/folder-yellow-download.svg)
 
 **NOTE:** This project doesn't provide any folder icons. If you want to request a new folder icon or a new color of folder please open an issue [here](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme/issues/new).
-
-**NOTE:** If you want to change the color of folders to your own or use presets for popular themes, see [Oomox theme designer](https://github.com/themix-project/oomox).
-
-**NOTE:** To change the color of an individual folder you can use [Folder Color](http://foldercolor.tuxfamily.org) or [Dolphin Folder Color](https://github.com/audoban/dolphin-folder-color).
 
 ## Installation
 
@@ -116,3 +113,13 @@ papirus-folders -Ru
 ```
 
 The last command is extremely useful for restoring color after icon theme upgrade (official installers of [papirus-icon-theme](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme) and some third-party packages do this automatically).
+
+
+## Related projects
+
+Use case | Tool
+--- | ---
+Graphical user interface for papirus-folders | [papirus-folders-gui](https://github.com/ItzSelenux/papirus-folders-gui)
+Graphical application for generating folders icon with to your own colors or with presets for popular themes | [Oomox theme designer](https://github.com/themix-project/oomox)
+A context menu for Nautilus, Nemo or Caja File Browser for changing the color of an individual folder | [Folder Color](http://foldercolor.tuxfamily.org)
+Dolphin contextual menu for coloring a selected folders | [Dolphin Folder Color](https://github.com/audoban/dolphin-folder-color)
