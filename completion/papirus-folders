@@ -33,8 +33,9 @@ __get_themes() {
 _papirus_folders() {
 	local cur prev
 	local -a colors=(black blue bluegrey breeze brown carmine cyan
-		deeporange green grey indigo magenta nordic orange palebrown
-		paleorange pink purple red teal violet white yaru yellow)
+		darkcyan deeporange green grey indigo magenta nordic orange
+		palebrown paleorange pink purple red teal violet white yaru
+		yellow)
 	local -a opts=(
 		-h --help
 		-V --version

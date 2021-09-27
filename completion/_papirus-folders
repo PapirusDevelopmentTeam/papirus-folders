@@ -6,8 +6,9 @@
 
 _get_colors() {
 	local -a colors=(black blue bluegrey breeze brown carmine cyan
-		deeporange green grey indigo magenta nordic orange palebrown
-		paleorange pink purple red teal violet white yaru yellow)
+		darkcyan deeporange green grey indigo magenta nordic orange
+		palebrown paleorange pink purple red teal violet white yaru
+		yellow)
 	_wanted colors exlp 'color' compadd -- "${colors[@]}"
 	return 0
 }
