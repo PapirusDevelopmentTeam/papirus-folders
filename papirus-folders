@@ -509,12 +509,16 @@ main() {
 				do_restore_color
 				;;
 			list-colors)
-				cat <<- EOF
-				List of available colors:
+				if [ -t 1 ]; then
+					cat <<- EOF
+					List of available colors:
 
-				$(list_colors)
+					$(list_colors)
 
-				EOF
+					EOF
+				else
+					list_colors
+				fi
 				;;
 			update-icon-caches)
 				verify_privileges
