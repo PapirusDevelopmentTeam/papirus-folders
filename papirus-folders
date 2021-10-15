@@ -357,6 +357,8 @@ delete_icon_caches() {
 }
 
 update_icon_cache() {
+	[ -z "$DISABLE_ICON_CACHE_UPDATE" ] || return 0
+
 	delete_icon_caches
 
 	verbose "Rebuilding icon cache for '$THEME_NAME' ..."
