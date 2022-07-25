@@ -55,6 +55,12 @@ Use the script to install the latest version directly from this repo (independen
 wget -qO- https://git.io/papirus-folders-install | sh
 ```
 
+To install papirus-folders to **home directory** using the following command:
+
+```
+wget -qO- https://git.io/papirus-folders-install | env PREFIX=$HOME/.local sh
+```
+
 To install papirus-folders on **BSD systems** using the following command:
 
 ```
