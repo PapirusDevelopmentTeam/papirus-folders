@@ -414,7 +414,7 @@ parse_args() {
 			--default)        args+=( -D ) ;;
 			--restore)        args+=( -R ) ;;
 			--version)        args+=( -V ) ;;
-			--[0-9a-Z]*)
+			--[0-9a-zA-Z]*)
 				err "illegal option -- '$arg'"
 				usage 2
 				;;
