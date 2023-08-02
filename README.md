@@ -80,11 +80,12 @@ Packages listed in this section are third-party packages. If you have a problem 
 
 Please note that some packages in the list may be outdated, open [Repology](https://repology.org/project/papirus-folders/versions) to find out package versions.
 
-| **Distro** | **Maintainer** | **Package**  |
-| :--------- | :------------- | :----------- |
-| Arch Linux | Piotr Górski   | [papirus-folders-git](https://aur.archlinux.org/packages/papirus-folders-git) <sup>AUR</sup> |
-| MX Linux   | Steven Pusser  | `sudo apt-get install papirus-folders` |
-| NetBSD     | Nia Alarie     | [papirus-folders](http://pkgsrc.se/graphics/papirus-folders) <sup>pkgsrc</sup> |
+| **Distro** |  **Maintainer**   | **Package**  |
+| :--------- | :---------------- | :----------- |
+| Arch Linux | Piotr Górski      | [papirus-folders-git](https://aur.archlinux.org/packages/papirus-folders-git) <sup>AUR</sup> |
+| MX Linux   | Steven Pusser     | `sudo apt-get install papirus-folders` |
+| NetBSD     | Nia Alarie        | [papirus-folders](http://pkgsrc.se/graphics/papirus-folders) <sup>pkgsrc</sup> |
+| NixOS      | Alexandre Acebedo | `nix-env -iA nixos.papirus-folders` |
 | openSUSE   | andy great     | [papirus-folders](https://software.opensuse.org/package/papirus-folders) <sup>OBS [[link](https://build.opensuse.org/package/show/openSUSE:Factory/papirus-folders)]</sub> |
 | Void Linux | Benjamín Albiñana | `sudo xbps-install -S papirus-folders` |
 
