@@ -11,6 +11,7 @@ papirus-folders is a bash script that allows changing the color of folders in [P
     - [Third-party packages](#third-party-packages)
 - [Script usage](#script-usage)
 - [Related projects](#related-projects)
+- [Donate](#donate)
 
 ## Preview
 
@@ -131,3 +132,9 @@ Graphical user interface for papirus-folders | [papirus-folders-gui](https://git
 Graphical application for generating folders icon with to your own colors or with presets for popular themes | [Oomox theme designer](https://github.com/themix-project/oomox)
 A context menu for Nautilus, Nemo or Caja File Browser for changing the color of an individual folder | [Folder Color](http://foldercolor.tuxfamily.org)
 Dolphin contextual menu for coloring a selected folders | [Dolphin Folder Color](https://github.com/audoban/dolphin-folder-color)
+
+## Donate
+
+If you would like to support development by making one-time donation or by becoming a supporter, please visit our page on [Buy Me a Coffee](https://www.buymeacoffee.com/papirus).
+
+<a href="https://www.buymeacoffee.com/papirus"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=papirus&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
