@@ -117,7 +117,7 @@ declare_colors() {
 	local color=''
 	local -a colors=()
 	local -a valid_colors=("adwaita" "black" "blue" "bluegrey" "breeze" "brown"
-		"carmine" "cyan" "darkcyan" "deeporange" "green" "grey"
+		"carmine" "chameleon" "cyan" "darkcyan" "deeporange" "green" "grey"
 		"indigo" "magenta" "nordic" "orange" "palebrown" "paleorange"
 		"pink" "purple" "red" "teal" "violet" "white" "yaru" "yellow")
 
