@@ -1,6 +1,6 @@
-papirus-folders (1.12.1-1) UNRELEASED; urgency=low
+papirus-folders (1.13.0-1) UNRELEASED; urgency=low
 
-  [ Alexey Varfolomeev ]
-  * Added Adwaita color
+  [ Sergei Eremenko ]
+  * New release.
 
- -- Sergei Eremenko <finalitik@gmail.com>  Mon, 06 Feb 2023 14:43:01 +0200
+ -- Serhii Yeremenko <finalitik@gmail.com>  Sun, 05 Nov 2023 15:27:48 +0200
