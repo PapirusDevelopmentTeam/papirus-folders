@@ -116,15 +116,14 @@ _is_valid_color() {
 declare_colors() {
 	local color=''
 	local -a colors=()
-	local -a valid_colors=("adwaita" "black" "blue" "bluegrey" "breeze" "brown"
-		"carmine" "cyan" "darkcyan" "deeporange" "green" "grey"
-		"indigo" "magenta" "nordic" "orange" "palebrown" "paleorange"
-		"pink" "purple" "red" "teal" "violet" "white" "yaru" "yellow")
 
-	for color in "${valid_colors[@]}"; do
-		if [ -e "$THEME_DIR/48x48/places/folder-$color.svg" ]; then
-			colors=( "${colors[@]}" "$color" )
+	for f in "$THEME_DIR/48x48/places/folder-"*"-documents.svg"; do
+		# Extract color from the path
+		if [[ $f =~ .*/folder-(.+)-documents.svg ]]; then
+			color="${BASH_REMATCH[1]}"
 		fi
+
+		colors=( "${colors[@]}" "$color" )
 	done
 
 	# return array of colors
