@@ -13,4 +13,8 @@ Architecture: all
 Multi-Arch: foreign
 Depends: ${misc:Depends}, bash (>= 4.0)
 Recommends: papirus-icon-theme (>= 20171007)
-Description: This package allows you to change the color of folders
+Description: a tool that lets you change the colors of folders
+ Papirus-folders is a handy bash script that lets you change the
+ colors of folders in the Papirus icon theme and its forks based on
+ version 20171007 or newer.
+ It's an easy way to customize how your folders look.

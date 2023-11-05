@@ -1,6 +1,6 @@
 # Papirus Folders
 
-papirus-folders is a bash script that allows changing the color of folders in [Papirus icon theme](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme) and its forks (which based on version 20171007 and newer).
+papirus-folders is a handy bash script that lets you change the colors of folders in the [Papirus icon theme](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme) and similar themes based on version 20171007 or newer. It's an easy way to customize how your folders look.
 
 ## Table of contents
 
@@ -31,7 +31,8 @@ papirus-folders is a bash script that allows changing the color of folders in [P
 | **white** | ![folder-white](https://cdn.jsdelivr.net/gh/PapirusDevelopmentTeam/papirus-icon-theme@master/Papirus/48x48/places/folder-white.svg) ![user-white-home](https://cdn.jsdelivr.net/gh/PapirusDevelopmentTeam/papirus-icon-theme@master/Papirus/48x48/places/user-white-home.svg) ![folder-white-download](https://cdn.jsdelivr.net/gh/PapirusDevelopmentTeam/papirus-icon-theme@master/Papirus/48x48/places/folder-white-download.svg) | **yaru** | ![folder-yaru](https://cdn.jsdelivr.net/gh/PapirusDevelopmentTeam/papirus-icon-theme@master/Papirus/48x48/places/folder-yaru.svg) ![user-yaru-home](https://cdn.jsdelivr.net/gh/PapirusDevelopmentTeam/papirus-icon-theme@master/Papirus/48x48/places/user-yaru-home.svg) ![folder-yaru-download](https://cdn.jsdelivr.net/gh/PapirusDevelopmentTeam/papirus-icon-theme@master/Papirus/48x48/places/folder-yaru-download.svg) |
 | **yellow** | ![folder-yellow](https://cdn.jsdelivr.net/gh/PapirusDevelopmentTeam/papirus-icon-theme@master/Papirus/48x48/places/folder-yellow.svg) ![user-yellow-home](https://cdn.jsdelivr.net/gh/PapirusDevelopmentTeam/papirus-icon-theme@master/Papirus/48x48/places/user-yellow-home.svg) ![folder-yellow-download](https://cdn.jsdelivr.net/gh/PapirusDevelopmentTeam/papirus-icon-theme@master/Papirus/48x48/places/folder-yellow-download.svg) |
 
-**NOTE:** This project doesn't provide any folder icons. If you want to request a new folder icon or a new color of folder please open an issue [here](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme/issues/new).
+> [!IMPORTANT]
+> This project doesn't provide any folder icons. If you want to request a new folder icon or a new color of folder please open an issue [here](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme/issues/new).
 
 ## Installation
 
@@ -91,7 +92,8 @@ Please note that some packages in the list may be outdated, open [Repology](http
 | Void Linux | Benjamín Albiñana | `sudo xbps-install -S papirus-folders` |
 
 
-**NOTE:** If you are a maintainer and want to be in the list, please create an issue or make a pull request.
+> [!NOTE]
+> If you are a maintainer and want to be in the list, please create an issue or make a pull request.
 
 ### Script usage
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# This script allows changing the color of folders in Papirus icon theme
+# This script lets you change the colors of folders in the Papirus icon theme
 #
 # @author: Sergei Eremenko (https://github.com/SmartFinn)
 # @license: MIT license (MIT)
