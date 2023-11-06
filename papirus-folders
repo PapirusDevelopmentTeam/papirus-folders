@@ -114,16 +114,15 @@ _is_valid_color() {
 }
 
 declare_colors() {
-	local color=''
 	local -a colors=()
 
 	for f in "$THEME_DIR/48x48/places/folder-"*"-documents.svg"; do
+		[ -e "$f" ] || continue
+
 		# Extract color from the path
 		if [[ $f =~ .*/folder-(.+)-documents.svg ]]; then
-			color="${BASH_REMATCH[1]}"
+			colors=( "${colors[@]}" "${BASH_REMATCH[1]}" )
 		fi
-
-		colors=( "${colors[@]}" "$color" )
 	done
 
 	# return array of colors
