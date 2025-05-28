@@ -299,7 +299,15 @@ do_change_color() {
 	msg "Changing color of folders to '$SELECTED_COLOR' for '$THEME_NAME' ..."
 	change_color "$SELECTED_COLOR"
 	config --new --set "theme=$THEME_NAME" "color=$SELECTED_COLOR"
-	update_icon_cache
+
+	case "$THEME_NAME" in
+		Papirus-Dark|Papirus-Light)
+			update_icon_caches
+			;;
+		*)
+			update_icon_cache
+			;;
+	esac
 }
 
 do_revert_default() {
@@ -308,7 +316,15 @@ do_revert_default() {
 	msg "Restoring default folder color for '$THEME_NAME' ..."
 	change_color "${DEFAULT_COLORS[$THEME_NAME]:-blue}"
 	config --new
-	update_icon_cache
+
+	case "$THEME_NAME" in
+		Papirus-Dark|Papirus-Light)
+			update_icon_caches
+			;;
+		*)
+			update_icon_cache
+			;;
+	esac
 }
 
 do_restore_color() {
