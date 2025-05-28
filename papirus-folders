@@ -463,9 +463,9 @@ main() {
 	declare -i VERBOSE="${VERBOSE:-0}"
 	declare -i ONCE="${ONCE:-0}"
 	declare -A DEFAULT_COLORS=(
-		['ePapirus']='blue'
 		['Papirus']='blue'
 		['Papirus-Dark']='blue'
+		['Papirus-Light']='blue'
 	)
 
 	declare SELECTED_COLOR=''
